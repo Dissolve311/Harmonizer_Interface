@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href = "css/main.css"></link>
+    <link rel="stylesheet" href = "css/pianoroll.css"></link>
+    <script type="text/javascript" src="js/lib/jquery.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/lib/webaudio-pianoroll.js"></script>
+    <script src="js/pianoroll.js"></script>
+    <script src="js/webaudio-controls.js" ></script>
+    <script src="https://kit.fontawesome.com/ad875c707d.js" crossorigin="anonymous"></script>
+    
+
+    <title>Harmonizer</title>
+</head>
+<body>
+    <header class="studioheader">
+        <div class="menu">
+            <button class="headerbutton refreshbutton" id="refresh button" title="Regenerate all">
+                <span>Refresh All</span>
+            </button>
+
+            <div class="num_gen">
+                <select class="select" title="Number to generate" id="num_gen_select">
+                    <option value="1" selected ="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <div class="headertext" id="num_gen_text">Pieces</div>
+            </div>           
+        </div>
+    </header>
+
+    <div class="studiobody">
+        <!-- Bottom piano roll overlay -->
+        <div id="myProllnav" class="prollnav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeProll()">&times;</a>
+
+            <div id="base">
+                <webaudio-pianoroll id="proll" width="1800" height="360"></webaudio-pianoroll>
+                
+                <webaudio-slider oninput="Layout(this)" id="xrange" direction="horz" width="120" height="24" min="1" max="10" value="1"></webaudio-slider>
+                <webaudio-slider oninput="Layout(this)" id="xoffset" direction="horz" width="200" height="24" min="0" max="50" step="0.01" value="0"></webaudio-slider>
+                <webaudio-slider oninput="Layout(this)" id="yrange" direction="vert" width="24" height="120" min="19.8" max="22" step="0.1" value="16"></webaudio-slider>
+                <webaudio-slider oninput="Layout(this)" id="yoffset" direction="vert" width="24" height="200" min="30" max="100" height="200" value="60"></webaudio-slider>
+                </div>
+                <!-- <button onclick="document.getElementById('mml').value=(document.getElementById('proll').getMMLString())">getMMLString</button>
+                <button onclick="document.getElementById('proll').setMMLString(document.getElementById('mml').value)">setMMLString</button> -->
+                <button onclick="Play()">Play</button>
+                <button onclick="document.getElementById('proll').stop()">Stop</button>
+                <br/>
+                <!-- <textarea id="mml" rows="10" cols="80"></textarea> -->
+                <br/>
+                <hr/>
+
+        </div>
+
+        <div class="dropzone" id="dropzone" ondrop="dropHandler(event);return false;" ondragover="dragOverHandler(event); return false;" ondragleave="dragLeaveHandler(event);return false;" ondblclick="openProll();"> 
+            <button class="bodybutton generatebutton" id="generatebutton" onclick="generateResults(event);">
+                <span>Generate</span>
+            </button>
+            <p class="innerText">Drop Your MIDI File here OR <button src="#" class="write_melody" onclick = "writeMelody();">Write a Melody Now</button> </p>
+        </div>
+
+        <div class="results option1" id="option1">
+            <div class="optionleft">
+                <i class="playbutton ic-playbutton far fa-play-circle" onclick="showpause(event);"></i>
+                <i class="playbutton iconpause fas fa-pause-circle" onclick="showplay(event);"></i>
+            </div>
+            <p>Option1</p>
+            <div class= "optionicons">
+                <i class="optionicon ic-refresh fas fa-sync-alt" title="refresh"></i>
+                <i class="optionicon ic-edit fas fa-edit" title="edit" onclick ="openNav(event);"></i>
+                <i class="optionicon ic-download fas fa-download" title="download"></i>
+                <i class="optionicon ic-restore fas fa-undo" title="restore"></i>
+            </div>                      
+        </div>
+        <div class="results option2" id="option2">
+            <div class="optionleft">
+                <i class="playbutton ic-playbutton far fa-play-circle" onclick="showpause(event);"></i>
+                <i class="playbutton iconpause fas fa-pause-circle" onclick="showplay(event);"></i>
+            </div>
+            <p>Option2</p>
+            <div class= "optionicons">
+                <i class="optionicon ic-refresh fas fa-sync-alt" title="refresh"></i>
+                <i class="optionicon ic-edit fas fa-edit" title="edit" onclick ="openNav(event);"></i>
+                <i class="optionicon ic-download fas fa-download" title="download"></i>
+                <i class="optionicon ic-restore fas fa-undo" title="restore"></i>
+            </div>   
+        </div>
+        <div class="results option3" id="option3">
+            <div class="optionleft">
+                <i class="playbutton ic-playbutton far fa-play-circle" onclick="showpause(event);"></i>
+                <i class="playbutton iconpause fas fa-pause-circle" onclick="showplay(event);"></i>
+            </div>
+            <p>Option3</p>
+            <div class= "optionicons">
+                <i class="optionicon ic-refresh fas fa-sync-alt" title="refresh"></i>
+                <i class="optionicon ic-edit fas fa-edit" title="edit" onclick ="openNav(event);"></i>
+                <i class="optionicon ic-download fas fa-download" title="download"></i>
+                <i class="optionicon ic-restore fas fa-undo" title="restore"></i>
+            </div>   
+        </div>
+
+        <div id="myBottomnav" class="bottomnav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="chord-box">
+                <div class=bar1 id="bar1">
+                    Bar1
+                    <input class="inputbox" type="text" value="G">
+                    <input class="inputbox" type="text" value="E"> 
+                    <input class="inputbox" type="text" value="C">  
+                </div>
+                <div class=bar2 id="bar2">
+                    Bar2
+                    <input class="inputbox" type="text" value="A">
+                    <input class="inputbox" type="text" value="F"> 
+                    <input class="inputbox" type="text" value="C"> 
+                </div>
+                <div class=bar3 id="bar3">
+                    Bar3
+                    <input class="inputbox" type="text" value="G">
+                    <input class="inputbox" type="text" value="D"> 
+                    <input class="inputbox" type="text" value="B"> 
+                </div>
+                <div class=bar4 id="bar4">
+                    Bar4
+                    <input class="inputbox" type="text" value="G">
+                    <input class="inputbox" type="text" value="D"> 
+                    <input class="inputbox" type="text" value="B-"> 
+                </div>
+                <div class=bar5 id="bar5">
+                    Bar5
+                    <input class="inputbox" type="text" value="F#">
+                    <input class="inputbox" type="text" value="C#"> 
+                    <input class="inputbox" type="text" value="B-"> 
+                </div>
+                <div class=bar6 id="bar6">
+                    Bar6
+                    <input class="inputbox" type="text" value="F">
+                    <input class="inputbox" type="text" value="B"> 
+                    <input class="inputbox" type="text" value="G">
+                </div>
+                <div class=bar7 id="bar7">
+                    Bar7
+                    <input class="inputbox" type="text" value="E">
+                    <input class="inputbox" type="text" value="D">
+                    <input class="inputbox" type="text" value="B"> 
+                    <input class="inputbox" type="text" value="G">
+                </div>
+                <div class=bar8 id="bar8">
+                    Bar8
+                    <input class="inputbox" type="text" value="B">
+                    <input class="inputbox" type="text" value="G">
+                    <input class="inputbox" type="text" value="E"> 
+                    <input class="inputbox" type="text" value="C">
+                    
+                </div>
+            </div>
+          </div>
+                
+    </div>
+            
+
+        
+        
+    
+</body>
+
+
+
+</html>

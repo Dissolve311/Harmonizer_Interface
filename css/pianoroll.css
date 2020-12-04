@@ -1,0 +1,60 @@
+#base {
+	/* background:#88d; */
+	position:relative;
+	width:100%;
+    height:100%;
+    align-self: center;
+}
+#proll{
+	position:absolute;
+    width:100%;
+    left:20px;
+	top:40px;
+}
+
+#xrange{
+	position:absolute;
+	right:220px;
+	top:400px;
+}
+#xoffset{
+	position:absolute;
+	right:600px;
+	top:400px;
+}
+#yrange{
+	position:absolute;
+	right:180px;
+	top:270px;
+}
+#yoffset{
+	position:absolute;
+	right:180px;
+	top:60px;
+}
+#prollyoff{
+	position:absolute;
+	left:1040px;
+	top:16px;
+}
+#prollyzoom{
+	position:absolute;
+	left:1040px;
+	top:400px;
+}
+.ind{
+	background:#00f;
+	width:64px;
+	height:8px;
+	margin:0;
+	padding:0;
+	display:inline-block;
+}
+.pat{
+	background:#00f;
+	width:64px;
+	height:32px;
+	margin:0;
+	padding:0;
+	display:inline-block;
+}
